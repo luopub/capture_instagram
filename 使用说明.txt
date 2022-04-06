@@ -12,11 +12,20 @@
 1. python 3.8以上
 2. 安装包所需python包：
     windows: install.bat
-    linux 或 mac: ./install.sh
+    linux 或 mac:
+        第一次先运行命令修改文件为可执行： chmod +x install.sh
+        然后运行： ./install.sh
 3. chromedriver.exe(windows)/chromedriver(mac或linux)必须与chrome浏览器匹配，当前匹配的浏览器是100.xx.yy.zz。如果浏览器升级了，请到这里下载匹配的文件：https://registry.npmmirror.com/binary.html?path=chromedriver/
 4. 运行命令启动浏览器，并登录instagram账号。
     windows: start-chrome.bat
-    linux 或 mac: ./start-chrome.sh
+    linux:
+        第一次先运行命令修改文件为可执行： chmod +x start-chrome.sh
+        然后运行： ./start-chrome.sh
+    mac:
+        第一次先运行命令修改文件为可执行： chmod +x start-chrome-mac.sh
+        然后运行： ./start-chrome-mac.sh
 5. 开始抓取，根据提示输入tag和抓取步骤内容：
     windows: start-crawl.bat
-    linux 或 mac: ./start-crawl.sh
+    linux 或 mac:
+        第一次先运行命令修改文件为可执行： chmod +x start-crawl.sh
+        然后运行： ./start-crawl.sh

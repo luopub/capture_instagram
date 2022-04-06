@@ -1,0 +1,22 @@
+注意事项：
+1. 由于instagram设置了严格的反爬虫措施，因为为了爬取顺利，采用浏览器辅助的方式，使用chrome浏览器。
+2. 爬取的数据分成3个部分步爬取，都存放在data文件夹中：
+    （1）首先爬取帖子地址列表，根据给到的tag，保存文件名称为"post_links_<tag 名称>.txt"。例如tag为sponsor, 则名称为”post_links_sponsor.txt“
+    （2）从第一步保存的帖子列表文件中读取帖子地址，然后爬取帖子信息，保存文件名称为"posts_<tag 名称>.csv"。例如tag为sponsor, 则名称为”posts_sponsor.csv“
+    （3）从第二步保存的帖子详细信息读取用户地址，然后爬取用户粉丝数量，所有用户信息保存在同一个个文件，名称”user_follower.csv“
+3. data中产生的文件不要修改名称和删除，这样如果中途断掉，后面重新爬取，会过滤掉已经爬取过的内容
+4. 由于用户帖子中经常用到表情符号，因此无法区分是否英文。
+5. ！！！由于instagram严格的反爬虫措施，爬取过程中随时可能要求输入验证信息，甚至长时间出现”Please wait a few minutes before you try again.“暂时无解！！！
+
+安装和运行：
+1. python 3.8以上
+2. 安装包所需python包：
+    windows: install.bat
+    linux 或 mac: ./install.sh
+3. chromedriver.exe(windows)/chromedriver(mac或linux)必须与chrome浏览器匹配，当前匹配的浏览器是100.xx.yy.zz。如果浏览器升级了，请到这里下载匹配的文件：https://registry.npmmirror.com/binary.html?path=chromedriver/
+4. 运行命令启动浏览器，并登录instagram账号。
+    windows: start-chrome.bat
+    linux 或 mac: ./start-chrome.sh
+5. 开始抓取，根据提示输入tag和抓取步骤内容：
+    windows: start-crawl.bat
+    linux 或 mac: ./start-crawl.sh

@@ -32,7 +32,7 @@ while True:
         break
 print('\n\n')
 
-yes_no = ConsoleUtil.get_yes_no(f'Confirm your input，tag：{tag}, ：content: {contents[step-1]}，')
+yes_no = ConsoleUtil.get_yes_no(f'Confirm your input：tag={tag}, content={contents[step-1]}，')
 print('\n\n')
 
 if not yes_no:

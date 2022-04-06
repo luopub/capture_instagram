@@ -172,12 +172,15 @@ class CaptureSimpleSpider(scrapy.Spider, BrowserWrapperMixin):
             'ats_num': ats_num,
             'hashes_num': hashes_num,
             'text_length': post_len,
-            'datetime': time_text
+            'datetime': time_text,
+            'post_text': post_text
         }
 
         if self.post_index < len(self.post_links) - 1:
             self.post_index += 1
             yield self.get_post_detail_request(self.post_links[self.post_index])
+
+        time.sleep(1)
 
     def get_user_home_request(self, link):
         return SeleniumRequest(
@@ -243,6 +246,8 @@ class CaptureSimpleSpider(scrapy.Spider, BrowserWrapperMixin):
         if self.user_index < len(self.user_links) - 1:
             self.user_index += 1
             yield self.get_user_home_request(self.user_links[self.user_index])
+
+        time.sleep(1)
 
     def start_requests(self):
         request = self.start_crawl_tag_home()

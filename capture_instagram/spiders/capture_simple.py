@@ -142,7 +142,8 @@ class CaptureSimpleSpider(scrapy.Spider, BrowserWrapperMixin):
         hashes_num = len(hashes)
 
         # Remove @xx and #xx from post text
-        for i in [*ats, *hashes]:
+        # for i in [*ats, *hashes]:
+        for i in [*ats]:
             post_text = post_text.replace(i, '')
 
         post_text = post_text.strip()

@@ -148,7 +148,7 @@ class BrowserWrapperMixin:
             return
 
         # Must get the page at front tab, otherwise, the button is hidden and can't be clicked
-        self.switch_to_front_window()
+        # self.switch_to_front_window()
 
         self.browser.get('chrome://settings/content/images')
         time.sleep(2)

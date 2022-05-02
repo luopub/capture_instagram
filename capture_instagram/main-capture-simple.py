@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 from scrapy.cmdline import execute
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -39,7 +40,9 @@ if not yes_no:
     sys.exit(0)
 
 
-data_folder = './data'
+data_folder = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
+# If windows, remove the disk label
+data_folder = re.sub('^[A-Z]:', '', data_folder)
 
 if step == 1:
     max_count = ConsoleUtil.get_valid_input_int('Input max number of links to craw', 1000)

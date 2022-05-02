@@ -1,12 +1,14 @@
 import os
 import time
 import scrapy
+import re
 import pandas as pd
 from pydispatch import dispatcher
 from scrapy import signals
 from scrapy.utils.project import get_project_settings
 from urllib.parse import urljoin
 from selenium.webdriver.common.keys import Keys
+from urllib.parse import urlparse
 
 from capture_instagram.browser_wrapper import BrowserWrapperMixin, SeleniumRequest
 
@@ -150,6 +152,8 @@ class CaptureSimpleSpider(scrapy.Spider, BrowserWrapperMixin):
 
         post_len = len(post_text)
 
+        question_count = len(re.findall(r'\?', post_text))
+
         comments_num = len(response.xpath('//article/div/div[2]/div/div[2]/div[1]/ul/ul'))
 
         like_by_link = self.post_links[self.post_index] + 'liked_by/'
@@ -158,7 +162,31 @@ class CaptureSimpleSpider(scrapy.Spider, BrowserWrapperMixin):
         if likes:
             likes_num = self.parse_number(likes)
         else:
-            likes_num = 0
+            try:
+                liked_path = urlparse(response.url).path + '/liked_by/'
+                liked_path = liked_path.replace('//', '/')  # Incase something wrong
+                a = self.browser.find_element_by_xpath(f'//a[@href="{liked_path}"]')
+                a.click()
+                time.sleep(2)
+                likes_dialog = self.browser.find_element_by_xpath('//div[@aria-label="Likes" and @role="dialog"]')
+                like_texts = set()
+                # Display only 11 items each time
+                while True:
+                    likes = likes_dialog.find_elements_by_xpath('.//div[@aria-labelledby]')
+                    texts = set([l.text for l in likes])
+                    if len(like_texts) > 1000 or not texts - like_texts:
+                        # Stop scroll if no more new likes
+                        break
+                    like_texts = like_texts.union(texts)
+                    like_container = likes_dialog.find_element_by_xpath('./div[1]/div[3]/div[1]')
+                    like_container.click()
+                    time.sleep(0.1)
+                    body = self.browser.find_element_by_css_selector('body')
+                    body.send_keys(Keys.PAGE_DOWN)
+                    time.sleep(0.3)
+                likes_num = len(like_texts)
+            except Exception as e:
+                likes_num = 0
 
         time_text = response.xpath('//article/div/div[2]/div/div[2]/div[2]//time/attribute::datetime').get()
 
@@ -174,7 +202,8 @@ class CaptureSimpleSpider(scrapy.Spider, BrowserWrapperMixin):
             'hashes_num': hashes_num,
             'text_length': post_len,
             'datetime': time_text,
-            'post_text': post_text
+            'post_text': post_text,
+            'question_count': question_count
         }
 
         if self.post_index < len(self.post_links) - 1:

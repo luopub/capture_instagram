@@ -267,10 +267,24 @@ class CaptureSimpleSpider(scrapy.Spider, BrowserWrapperMixin):
             followers = self.parse_number(followers_text)
         else:
             followers = 0
+            
+        posts_text = response.xpath(f'//header/section/ul/li[1]/div/span/text()').get()
+        if posts_text:
+            posts = self.parse_number(posts_text)
+        else:
+            posts = 0
+
+        following_text = response.xpath(f'//header/section/ul/li[3]//span/text()').get()
+        if following_text:
+            following = self.parse_number(following_text)
+        else:
+            following = 0
 
         yield {
             'link': response.meta['link'],
-            'followers': followers
+            'posts': posts,
+            'followers': followers,
+            'following': following
         }
 
         if self.user_index < len(self.user_links) - 1:

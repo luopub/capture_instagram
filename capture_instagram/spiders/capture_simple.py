@@ -133,6 +133,17 @@ class CaptureSimpleSpider(scrapy.Spider, BrowserWrapperMixin):
         return True
 
     def parse_post_detail_page(self, response):
+        time.sleep(5)
+        while True:
+            # 通过不停点击列表下面的“+”按钮，加载所有评论
+            try:
+                more_comments_button = self.browser.find_element_by_xpath('//article/div[1]/div[2]/div[1]/div[2]/div[1]/ul/li/div/button')
+                more_comments_button.click()
+                time.sleep(5)
+            except Exception as e:
+                break
+        response = self.get_response_from_browser(response.meta)
+
         user_name = response.xpath('//header//a/text()').get()
         user_link = response.xpath('//header//a/attribute::href').get()
 
